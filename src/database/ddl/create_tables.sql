@@ -1,0 +1,50 @@
+-- Active: 1785173677705@@127.0.0.1@5432@bookstore@public
+-- Criar banco de dados chamado: bookstore
+CREATE DATABASE bookstore;
+
+--Criar tabelas do banco de dados
+
+CREATE TABLE livro(
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  titulo VARCHAR(255) NOT NULL,
+  isbn VARCHAR(255) NULL UNIQUE,
+  qtd_total INTEGER NOT NULL,
+  disponiveis INTEGER NOT NULL
+);
+
+CREATE TABLE autor(
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE livro_autor(
+  livro_id INTEGER NOT NULL REFERENCES livro(id),
+  autor_id INTEGER NOT NULL REFERENCES autor(id)
+);
+
+CREATE TABLE cliente(
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  ativo INTEGER NOT NULL
+);
+
+CREATE TABLE funcionario(
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  senha VARCHAR(20) NOT NULL,
+  matricula VARCHAR(20) UNIQUE NOT NULL,
+  ativo INTEGER NOT NULL
+);
+
+CREATE TABLE emprestimo (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  cliente_id INTEGER NOT NULL REFERENCES cliente(id),
+  livro_id INTEGER NOT NULL REFERENCES livro(id),
+  funcionario_id INTEGER NOT NULL REFERENCES funcionario(id), 
+  data_emprestimo TIMESTAMP NOT NULL,
+  data_prevista TIMESTAMP NOT NULL,
+  data_devolucao TIMESTAMP NOT NULL,
+  status VARCHAR(30) NOT NULL
+);
