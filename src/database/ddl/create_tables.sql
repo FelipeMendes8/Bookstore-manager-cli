@@ -1,4 +1,4 @@
--- Active: 1785173677705@@127.0.0.1@5432@loja_virtual
+-- Active: 1785173677705@@127.0.0.1@5432@bookstore@public
 -- Criar banco de dados chamado: bookstore
 CREATE DATABASE bookstore;
 
@@ -18,8 +18,8 @@ CREATE TABLE autor(
 );
 
 CREATE TABLE livro_autor(
-  livro_id INTEGER NOT NULL,
-  autor_id INTEGER NOT NULL
+  livro_id INTEGER NOT NULL REFERENCES livro(id),
+  autor_id INTEGER NOT NULL REFERENCES autor(id)
 );
 
 CREATE TABLE cliente(
@@ -40,9 +40,9 @@ CREATE TABLE funcionario(
 
 CREATE TABLE emprestimo (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  cliente_id INTEGER NOT NULL,
-  livro_id INTEGER NOT NULL,
-  funcionario_id INTEGER NOT NULL,
+  cliente_id INTEGER NOT NULL REFERENCES cliente(id),
+  livro_id INTEGER NOT NULL REFERENCES livro(id),
+  funcionario_id INTEGER NOT NULL REFERENCES funcionario(id), 
   data_emprestimo TIMESTAMP NOT NULL,
   data_prevista TIMESTAMP NOT NULL,
   data_devolucao TIMESTAMP NOT NULL,
