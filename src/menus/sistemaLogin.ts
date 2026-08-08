@@ -2,6 +2,7 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'process';
 
 import { loginController } from '../controllers/loginController';
+import { CliSession } from '../utils/session';
 
 export const terminal = createInterface(stdin, stdout);
 
@@ -18,11 +19,12 @@ export async function menuLogin(): Promise<void> {
     }
 
     if (resultado.sucesso) {
-      console.log('Sucesso no login...');
-      console.log(resultado);
+      const funcionario = CliSession.getUsuario();
+
+      console.log(`Funcionário: ${funcionario.nome} (${funcionario.email}) logado com sucesso!`);
 
       //Chamar menu geral do sistema
-
+      terminal.close();
       break;
     }
   }

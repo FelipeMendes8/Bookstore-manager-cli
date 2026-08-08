@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+
 import { pool } from '../database/connection';
 import { Funcionario } from '../models/funcionario';
 import { FuncionarioRepository } from '../repositories/loginRepositorie';
@@ -9,24 +11,20 @@ export interface Sucesso {
   usuario?: Funcionario | null;
 }
 
-//Service fazer a criptografia
-
 export async function loginFuncionarioService(login: string, pass: string): Promise<Sucesso> {
   const funcionarioDB = new FuncionarioRepository(pool);
-  const funcionario = await funcionarioDB.buscarUsuario(login, pass);
+  const funcionario = await funcionarioDB.buscarUsuario(login);
 
   if (funcionario === null) {
     return { sucesso: false, mensagem: 'Erro, funcionário não encontrado.' };
   }
 
-  console.log('-------------------------------------------');
+  const senha = bcrypt.compareSync(pass, funcionario.senha);
+
+  if (!senha) {
+    return { sucesso: false, mensagem: 'Erro, senha incorreta.' };
+  }
+
   CliSession.setUsuario(funcionario);
-  const tester = CliSession.getUsuario();
-
-  console.log(tester.nome);
-  console.log(tester.matricula);
-
-  console.log('--------------------------------------------');
-
   return { sucesso: true, usuario: funcionario };
 }
