@@ -1,12 +1,7 @@
+import { loginFuncionarioService, Sucesso } from '../services/loginService';
 import { validarEmail } from '../utils/validarEmail';
 
-export interface Sucesso {
-  sucesso: boolean;
-  mensagem?: string;
-  usuario?: object;
-}
-
-export function loginController(login: string, pass: string): Sucesso {
+export async function loginController(login: string, pass: string): Promise<Sucesso> {
   if (!validarEmail(login)) {
     return { sucesso: false, mensagem: 'Email inválido, tente novamente.' };
   }
@@ -15,7 +10,7 @@ export function loginController(login: string, pass: string): Sucesso {
     return { sucesso: false, mensagem: 'A senha deve ter entre 6 e 20 caracter, tente novamente.' };
   }
 
-  console.log(login);
-  console.log(pass);
-  return { sucesso: true, usuario: { nome: 'Feh', idade: 100 } };
+  const loginService = await loginFuncionarioService(login, pass);
+
+  return loginService;
 }
