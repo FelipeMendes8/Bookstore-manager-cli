@@ -38,6 +38,8 @@
     "typescript-eslint": "^8.59.4"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "pg": "^8.22.0"
   }
