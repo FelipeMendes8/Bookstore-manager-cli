@@ -1,14 +1,29 @@
-import { initDatabase } from './database/connection';
-import { menuLogin } from './menus/sistemaLogin';
+import { createInterface } from 'node:readline/promises';
+import { stdin, stdout } from 'process';
+
+import { initDatabase, pool } from './database/connection';
+import { menuLogin } from './menus/sistema-login';
+
+export const terminal = createInterface({
+  input: stdin,
+  output: stdout,
+});
 
 async function main() {
-  await initDatabase();
+  try {
+    await initDatabase();
 
-  console.log('========================================');
-  console.log('   BookStore Manager CLI              ');
-  console.log('========================================');
-  console.log('');
-  await menuLogin();
+    console.log('========================================');
+    console.log('       BookStore Manager CLI            ');
+    console.log('========================================');
+
+    await menuLogin(terminal);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    terminal.close();
+    await pool.end();
+  }
 }
 
 main().catch(console.error);

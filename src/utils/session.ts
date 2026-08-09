@@ -13,4 +13,19 @@ export class CliSession {
     }
     return this.user;
   }
+
+  /*static loggedInUser(): boolean {
+    if (this.user) {
+      return true;
+    }
+    return false;
+  }
+
+  static async verificarLoginUser(): Promise<boolean> {
+    if (!this.user) {
+      console.error('Usuário não logado.');
+      await menuLogin(terminal);
+    }
+    return true;
+  }*/
 }
