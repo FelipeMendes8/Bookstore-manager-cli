@@ -1,14 +1,12 @@
-import { createInterface } from 'node:readline/promises';
-import { stdin, stdout } from 'process';
+import { Interface } from 'node:readline/promises';
 
 import { loginController } from '../controllers/loginController';
 import { CliSession } from '../utils/session';
 
-export const terminal = createInterface(stdin, stdout);
-
-export async function menuLogin(): Promise<void> {
+export async function menuLogin(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   while (true) {
+    //const terminal = createInterface(stdin, stdout);
     const login: string = await terminal.question('Digite o email para login: ');
     const pass: string = await terminal.question('Digite a senha: ');
 
@@ -16,16 +14,13 @@ export async function menuLogin(): Promise<void> {
 
     if (!resultado.sucesso) {
       console.error(resultado.mensagem);
+      continue;
     }
 
-    if (resultado.sucesso) {
-      const funcionario = CliSession.getUsuario();
+    const funcionario = CliSession.getUsuario();
 
-      console.log(`Funcionário: ${funcionario.nome} (${funcionario.email}) logado com sucesso!`);
+    console.log(`Funcionário: ${funcionario.nome} (${funcionario.email}) logado com sucesso!`);
 
-      //Chamar menu geral do sistema
-      terminal.close();
-      break;
-    }
+    break;
   }
 }
