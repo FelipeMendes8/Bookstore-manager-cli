@@ -1,5 +1,6 @@
 import { Interface } from 'node:readline/promises';
 
+import { exibirMenuPrincipal } from './menu-principal';
 import { loginController } from '../controllers/loginController';
 import { CliSession } from '../utils/session';
 
@@ -20,7 +21,7 @@ export async function menuLogin(terminal: Interface): Promise<void> {
     const funcionario = CliSession.getUsuario();
 
     console.log(`Funcionário: ${funcionario.nome} (${funcionario.email}) logado com sucesso!`);
-
+    await exibirMenuPrincipal(terminal);
     break;
   }
 }

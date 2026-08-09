@@ -4,7 +4,7 @@ import { stdin, stdout } from 'process';
 import { initDatabase, pool } from './database/connection';
 import { menuLogin } from './menus/sistema-login';
 
-const terminal = createInterface({
+export const terminal = createInterface({
   input: stdin,
   output: stdout,
 });
