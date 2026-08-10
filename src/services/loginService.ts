@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt';
 
 import { pool } from '../database/connection';
 import { Funcionario } from '../models/funcionario';
-import { FuncionarioRepository } from '../repositories/loginRepositorie';
+import { FuncionarioRepository } from '../repositories/loginRepository';
 import { CliSession } from '../utils/session';
 
 export interface Sucesso {
