@@ -1,5 +1,7 @@
 import type { Interface } from 'node:readline/promises';
 
+import { exibirMenuAutores } from './menu-autor';
+
 export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
   //Obs: Aqui seria bom validar o login do funcionário
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -12,15 +14,14 @@ export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
 
     console.log('1- Autores\n2- Livros\n3- Clientes\n4- Empréstimos\n5- Relatórios\n0- Sair');
 
-    const opcao = await terminal.question('Digite uma opção: ');
+    const opcao = await terminal.question('> Digite uma opção: ');
 
     switch (opcao) {
       case '1': {
-        console.log('Acessando menu dos autores...');
-
+        //console.log('Acessando menu dos autores...');
+        await exibirMenuAutores(terminal);
         break;
       }
-
       case '2': {
         console.log('Acessando menu de livros...');
 
