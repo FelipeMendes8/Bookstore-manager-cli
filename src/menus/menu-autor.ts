@@ -1,6 +1,12 @@
 import { Interface } from 'node:readline/promises';
 
-import { criarAutorController, listarAutorController } from '../controllers/autorController';
+import {
+  atualizarAutorController,
+  buscarAutorController,
+  criarAutorController,
+  deletarAutorController,
+  listarAutorController,
+} from '../controllers/autorController';
 
 export async function exibirMenuAutores(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -12,7 +18,7 @@ export async function exibirMenuAutores(terminal: Interface): Promise<void> {
     console.log('2- Listar todos os autores');
     console.log('3- Buscar autor por ID');
     console.log('4- Atualizar autor');
-    console.log('5- Excluir autor');
+    console.log('5- Deletar autor');
     console.log('0- Voltar');
 
     const opcao: string = await terminal.question('> Digite uma opção: ');
@@ -35,15 +41,24 @@ export async function exibirMenuAutores(terminal: Interface): Promise<void> {
           break;
         }
         case '3': {
-          console.log('Buscar');
+          const id = await terminal.question('Digite o ID do autor para Buscar: ');
+          const autor = await buscarAutorController(id);
+          console.log(`ID: ${String(autor.id)}, Nome: ${autor.nome}`);
           break;
         }
         case '4': {
-          console.log('Atualizar');
+          const id = await terminal.question('Digite o ID do autor para Atualizar: ');
+          const nome = await terminal.question('Digite o Nome do autor para Atualizar: ');
+          const autor = await atualizarAutorController(id, nome);
+          console.log(`Autor ID: "${String(autor.id)}" atualizado, nome: ${autor.nome}`);
           break;
         }
         case '5': {
-          console.log('Excluir');
+          const id = await terminal.question('Digite o ID do autor para Deletar: ');
+          const deletar = await deletarAutorController(id);
+          if (deletar) {
+            console.log('Autor excluído com sucesso.');
+          }
           break;
         }
         case '0': {

@@ -25,4 +25,31 @@ export class AutorService {
 
     return autores;
   }
+
+  async buscar(id: string): Promise<Autor> {
+    const novoID = Number(id);
+    const autorDB = new AutorRepository(pool);
+    const autor = await autorDB.buscarAutor(novoID);
+
+    if (autor === null) {
+      throw new Error('Autor não encontrado.');
+    }
+
+    return autor;
+  }
+
+  async atualizar(id: string, nome: string): Promise<Autor> {
+    const novoID = Number(id);
+    const autorDB = new AutorRepository(pool);
+    const autor = await autorDB.atualizarAutor(novoID, nome);
+
+    return autor;
+  }
+
+  async deletar(id: string): Promise<boolean> {
+    const novoID = Number(id);
+    const autorDB = new AutorRepository(pool);
+    const excluir = await autorDB.deletarAutor(novoID);
+    return excluir;
+  }
 }
