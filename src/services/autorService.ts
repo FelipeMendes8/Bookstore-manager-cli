@@ -1,15 +1,12 @@
 import { pool } from '../database/connection';
 import { Autor } from '../models/autor';
 import { AutorRepository } from '../repositories/autorRepository';
+import { validarNome } from '../utils/validarNome';
 
 export class AutorService {
   async cadastrar(nome: string) {
-    if (!nome) {
-      throw new Error('O nome do autor é obrigatório.');
-    }
-
-    if (nome.length > 100) {
-      throw new Error('O nome deve possuir no máximo 100 caracteres.');
+    if (!validarNome(nome)) {
+      throw new Error('O nome do autor é obrigatório e deve ter no máximo 100 caracteres.');
     }
 
     const autorDB = new AutorRepository(pool);
@@ -40,6 +37,11 @@ export class AutorService {
 
   async atualizar(id: string, nome: string): Promise<Autor> {
     const novoID = Number(id);
+
+    if (!validarNome(nome)) {
+      throw new Error('O nome do autor é obrigatório e deve ter no máximo 100 caracteres.');
+    }
+
     const autorDB = new AutorRepository(pool);
     const autor = await autorDB.atualizarAutor(novoID, nome);
 
