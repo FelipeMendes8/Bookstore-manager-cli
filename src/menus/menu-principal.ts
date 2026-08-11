@@ -2,6 +2,7 @@ import type { Interface } from 'node:readline/promises';
 
 import { exibirMenuAutores } from './menu-autor';
 import { exibirMenuClientes } from './menu-cliente';
+import { exibirMenuLivros } from './menu-livro';
 
 export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
   //Obs: Aqui seria bom validar o login do funcionário
@@ -23,7 +24,7 @@ export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
         break;
       }
       case '2': {
-        console.log('Acessando menu de livros...');
+        await exibirMenuLivros(terminal);
 
         break;
       }
