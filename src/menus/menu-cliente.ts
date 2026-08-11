@@ -1,6 +1,12 @@
 import { Interface } from 'node:readline/promises';
 
-import { criarClienteController, listarClienteController } from '../controllers/clienteController';
+import {
+  atualizarCLienteController,
+  buscarClienteController,
+  criarClienteController,
+  deletarClienteController,
+  listarClienteController,
+} from '../controllers/clienteController';
 
 export async function exibirMenuClientes(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -35,17 +41,17 @@ export async function exibirMenuClientes(terminal: Interface): Promise<void> {
 
           break;
         }
-        /*case '3': {
+        case '3': {
           const id = await terminal.question('Digite o ID do cliente para Buscar: ');
           const cliente = await buscarClienteController(id);
-          console.log(`ID: ${String(cliente.id)}, Nome: ${cliente.nome}`);
+          console.log(`ID: ${String(cliente.id)}, Nome: ${cliente.nome}, Email: ${cliente.email}`);
           break;
         }
         case '4': {
           const id = await terminal.question('Digite o ID do cliente para Atualizar: ');
           const nome = await terminal.question('Digite o Nome do cliente para Atualizar: ');
           const email = await terminal.question('Digite o Email do cliente para Atualizar: ');
-          const cliente = await atualizarClienteController(id, nome, email);
+          const cliente = await atualizarCLienteController(id, nome, email);
           console.log(`Cliente ID: "${String(cliente.id)}" atualizado, nome: ${cliente.nome}, email: ${cliente.email}`);
           break;
         }
@@ -56,7 +62,7 @@ export async function exibirMenuClientes(terminal: Interface): Promise<void> {
             console.log('Cliente excluído com sucesso.');
           }
           break;
-        }*/
+        }
         case '0': {
           console.log('Voltando ao menu principal...');
           return;
