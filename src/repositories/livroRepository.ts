@@ -43,4 +43,16 @@ export class LivroRepository {
       poolConnection.release();
     }
   }
+
+  async listarLivros(): Promise<Livro[]> {
+    const { rows } = await this.pool.query<Livro>('SELECT * FROM livro WHERE ativo = 1 ORDER BY titulo ASC;');
+
+    return rows;
+  }
+
+  async buscarLivro(id: number): Promise<Livro | null> {
+    const result = await this.pool.query<Livro>('SELECT * FROM livro WHERE id = $1 AND ativo = 1;', [id]);
+
+    return result.rows[0] ?? null;
+  }
 }

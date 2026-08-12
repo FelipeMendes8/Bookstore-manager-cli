@@ -1,6 +1,6 @@
 import { Interface } from 'node:readline/promises';
 
-import { criarLivroController } from '../controllers/livroController';
+import { buscarLivroController, criarLivroController, listarLivroController } from '../controllers/livroController';
 
 export async function exibirMenuLivros(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -26,6 +26,23 @@ export async function exibirMenuLivros(terminal: Interface): Promise<void> {
           const autores = await terminal.question('Digite os IDs dos autores separados por vírgula: ');
           const livro = await criarLivroController(titulo, isbn, qtdTotal, autores);
           console.log(`Livro "${livro.titulo}" (${livro.isbn}) cadastrado com sucesso!`);
+          break;
+        }
+        case '2': {
+          console.log('\n[Lista de livros]');
+          const livros = await listarLivroController();
+          livros.forEach((livro) => {
+            console.log(`#${String(livro.id)} '${livro.titulo}' ISBN: ${livro.isbn}.`);
+            //Obs: Aqui é interessante mostrar o autor do livro (Att futura)...
+          });
+
+          break;
+        }
+        case '3': {
+          const id = await terminal.question('Digite o ID do livro para Buscar: ');
+          const livro = await buscarLivroController(id);
+          console.log(`ID: ${String(livro.id)}, Título: ${livro.titulo}, ISBN: ${livro.isbn}`);
+          //Obs: Aqui é interessante mostrar o autor do livro (Att futura)...
           break;
         }
 
