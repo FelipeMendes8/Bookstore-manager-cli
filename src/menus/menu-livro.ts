@@ -1,6 +1,12 @@
 import { Interface } from 'node:readline/promises';
 
-import { buscarLivroController, criarLivroController, deletarLivroController, listarLivroController } from '../controllers/livroController';
+import {
+  atualizarLivroController,
+  buscarLivroController,
+  criarLivroController,
+  deletarLivroController,
+  listarLivroController,
+} from '../controllers/livroController';
 
 export async function exibirMenuLivros(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -32,8 +38,10 @@ export async function exibirMenuLivros(terminal: Interface): Promise<void> {
           console.log('\n[Lista de livros]');
           const livros = await listarLivroController();
           livros.forEach((livro) => {
+            console.log('----------------------------------------');
             console.log(`#${String(livro.id)} '${livro.titulo}' ISBN: ${livro.isbn}.`);
-            //Obs: Aqui é interessante mostrar o autor do livro (Att futura)...
+            console.log(`Autor: ${livro.autores}`);
+            console.log('----------------------------------------');
           });
 
           break;
@@ -41,12 +49,23 @@ export async function exibirMenuLivros(terminal: Interface): Promise<void> {
         case '3': {
           const id = await terminal.question('Digite o ID do livro para Buscar: ');
           const livro = await buscarLivroController(id);
+          console.log('----------------------------------------');
           console.log(`ID: ${String(livro.id)}, Título: ${livro.titulo}, ISBN: ${livro.isbn}`);
-          //Obs: Aqui é interessante mostrar o autor do livro (Att futura)...
+          console.log(`Autor: ${livro.autores}`);
+          console.log('----------------------------------------');
+
           break;
         }
 
-        //case '4':{console.log('atualizar livro...');}
+        case '4': {
+          const id = await terminal.question('Digite o ID do livro para Atualizar: ');
+          const titulo = await terminal.question('Digite o Título do livro para Atualizar: ');
+          const isbn = await terminal.question('Digite o ISBN do livro para Atualizar: ');
+          const autores = await terminal.question('Digite os IDs dos autores separados por vírgula para Atualizar:  ');
+          const livro = await atualizarLivroController(id, titulo, isbn, autores);
+          console.log(`Livro ID: "${String(livro.id)}" atualizado, título: ${livro.titulo}`);
+          break;
+        }
 
         case '5': {
           const id = await terminal.question('Digite o ID do livro para Deletar: ');

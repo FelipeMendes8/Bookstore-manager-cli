@@ -19,6 +19,12 @@ export async function buscarLivroController(id: string): Promise<Livro> {
   return livro;
 }
 
+export async function atualizarLivroController(id: string, titulo: string, isbn: string, autores: string): Promise<Livro> {
+  const livroService = new LivroService();
+  const livro = await livroService.atualizar(id, titulo, isbn, autores);
+  return livro;
+}
+
 export async function deletarLivroController(id: string): Promise<boolean> {
   const livroService = new LivroService();
   const excluir = await livroService.deletar(id);

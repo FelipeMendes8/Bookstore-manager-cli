@@ -5,4 +5,5 @@ export interface Livro {
   qtd_total: number;
   disponiveis: number;
   ativo: number;
+  autores: string;
 }
