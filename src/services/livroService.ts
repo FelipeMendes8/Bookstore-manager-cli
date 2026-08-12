@@ -43,4 +43,11 @@ export class LivroService {
 
     return livro;
   }
+
+  async deletar(id: string): Promise<boolean> {
+    const novoID = Number(id);
+    const livroDB = new LivroRepository(pool);
+    const excluir = await livroDB.deletarLivro(novoID);
+    return excluir;
+  }
 }

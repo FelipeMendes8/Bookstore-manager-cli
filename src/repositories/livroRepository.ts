@@ -55,4 +55,14 @@ export class LivroRepository {
 
     return result.rows[0] ?? null;
   }
+
+  async deletarLivro(id: number): Promise<boolean> {
+    const livro = await this.buscarLivro(id);
+
+    if (livro === null) {
+      throw new Error('Livro não encontrado.');
+    }
+    const result = await this.pool.query('UPDATE livro SET ativo = 0 WHERE id = $1 RETURNING *;', [id]);
+    return result.rowCount === 1;
+  }
 }

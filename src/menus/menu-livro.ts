@@ -1,6 +1,6 @@
 import { Interface } from 'node:readline/promises';
 
-import { buscarLivroController, criarLivroController, listarLivroController } from '../controllers/livroController';
+import { buscarLivroController, criarLivroController, deletarLivroController, listarLivroController } from '../controllers/livroController';
 
 export async function exibirMenuLivros(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -43,6 +43,17 @@ export async function exibirMenuLivros(terminal: Interface): Promise<void> {
           const livro = await buscarLivroController(id);
           console.log(`ID: ${String(livro.id)}, Título: ${livro.titulo}, ISBN: ${livro.isbn}`);
           //Obs: Aqui é interessante mostrar o autor do livro (Att futura)...
+          break;
+        }
+
+        //case '4':{console.log('atualizar livro...');}
+
+        case '5': {
+          const id = await terminal.question('Digite o ID do livro para Deletar: ');
+          const deletar = await deletarLivroController(id);
+          if (deletar) {
+            console.log('Livro excluído com sucesso.');
+          }
           break;
         }
 

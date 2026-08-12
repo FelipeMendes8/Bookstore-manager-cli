@@ -18,3 +18,9 @@ export async function buscarLivroController(id: string): Promise<Livro> {
   const livro = await livroService.buscar(id);
   return livro;
 }
+
+export async function deletarLivroController(id: string): Promise<boolean> {
+  const livroService = new LivroService();
+  const excluir = await livroService.deletar(id);
+  return excluir;
+}
