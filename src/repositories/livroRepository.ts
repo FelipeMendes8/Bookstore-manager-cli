@@ -97,7 +97,7 @@ export class LivroRepository {
 
       const livro = rows[0];
 
-      await this.pool.query('DELETE FROM livro_autor WHERE livro_id = $1;', [livro.id]);
+      await poolConnection.query('DELETE FROM livro_autor WHERE livro_id = $1;', [livro.id]);
 
       for (const autorId of autores) {
         await poolConnection.query(
