@@ -1,6 +1,6 @@
 import { Interface } from 'node:readline/promises';
 
-import { listarDisponiveisController, listarEmprestadosController } from '../controllers/relatorioController';
+import { listarDisponiveisController, listarEmprestadosController, livrosPorAutorController } from '../controllers/relatorioController';
 
 export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -42,7 +42,19 @@ export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
           break;
         }
         case '3': {
-          console.log('case 3');
+          const id = Number(await terminal.question('Digite o ID do autor para Buscar os livros cadastrados: '));
+
+          if (isNaN(id)) {
+            console.log('Erro: Informe um número válido no campo ID do autor.');
+            break;
+          }
+
+          const livros = await livrosPorAutorController(id);
+          for (const livro of livros) {
+            console.log('[Livros do Autor]');
+            console.log('Autor: ', livro.nome_autor);
+            console.log(`ID: ${String(livro.id)} | ${livro.titulo} | ISBN: ${livro.isbn}`);
+          }
 
           break;
         }

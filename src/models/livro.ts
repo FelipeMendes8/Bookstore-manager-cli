@@ -14,3 +14,10 @@ export interface LivroEmprestado {
   isbn: string;
   emprestados: number;
 }
+
+export interface LivroRelatorio {
+  id: number;
+  titulo: string;
+  isbn: string;
+  nome_autor: string;
+}

@@ -21,4 +21,11 @@ export class RelatorioService {
 
     return livros;
   }
+
+  async livrosAutor(id: number) {
+    const autorDB = new RelatorioRepository(pool);
+    const livros = await autorDB.livrosPorAutor(id);
+
+    return livros;
+  }
 }
