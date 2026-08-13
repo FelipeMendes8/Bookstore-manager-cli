@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 
 import { ClienteRepository } from './clienteRepository';
-import { Emprestimo } from '../models/emprestimo';
+import { Emprestimo, EmprestimoDetalhado } from '../models/emprestimo';
 import { LivroRepository } from '../repositories/livroRepository';
 
 export class EmprestimoRepository {
@@ -90,7 +90,52 @@ export class EmprestimoRepository {
     return result.rows[0] ?? null;
   }
 
-  //listarEmprestimos
+  async listar() {
+    const result = await this.pool.query<EmprestimoDetalhado>(
+      `
+    SELECT
+        e.id,
+        e.livro_id,
+        l.titulo AS "titulo_livro",
+        e.cliente_id,
+        c.nome AS "nome_cliente",
+        e.data_emprestimo AS "data_emprestimo",
+        e.data_devolucao AS "data_devolucao"
+    FROM emprestimo e
+    INNER JOIN livro l
+        ON l.id = e.livro_id
+    INNER JOIN cliente c
+        ON c.id = e.cliente_id
+    ORDER BY e.data_emprestimo DESC;
+    `,
+    );
+
+    return result.rows;
+  }
+
+  async buscarId(id: number): Promise<EmprestimoDetalhado | null> {
+    const result = await this.pool.query<EmprestimoDetalhado>(
+      `
+    SELECT
+        e.id,
+        e.livro_id,
+        l.titulo AS "titulo_livro",
+        e.cliente_id,
+        c.nome AS "nome_cliente",
+        e.data_emprestimo AS "data_emprestimo",
+        e.data_devolucao AS "data_devolucao"
+    FROM emprestimo e
+    INNER JOIN livro l
+        ON l.id = e.livro_id
+    INNER JOIN cliente c
+        ON c.id = e.cliente_id
+    WHERE e.id = $1;
+    `,
+      [id],
+    );
+
+    return result.rows[0] ?? null;
+  }
 
   async devolverEmprestimo(emprestimoId: number): Promise<boolean> {
     const emprestimo = await this.buscarEmprestimo(emprestimoId);

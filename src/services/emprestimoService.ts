@@ -19,6 +19,32 @@ export class EmprestimoService {
     return await emprestimoDB.realizarEmprestimo(livroId, clienteId, funcionario.id);
   }
 
+  async listarEmprestimos() {
+    const emprestimoDB = new EmprestimoRepository(pool);
+    const emprestimos = await emprestimoDB.listar();
+
+    if (emprestimos.length === 0) {
+      throw new Error('Nenhum livro encontrado.');
+    }
+
+    return emprestimos;
+  }
+
+  async buscarPorID(id: number) {
+    const emprestimoDB = new EmprestimoRepository(pool);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new Error('ID do empréstimo inválido.');
+    }
+    const emprestimo = await emprestimoDB.buscarId(id);
+
+    if (emprestimo === null) {
+      throw new Error('Emprestimo não encontrado.');
+    }
+
+    return emprestimo;
+  }
+
   async devolverEmprestimo(emprestimoId: number) {
     if (!Number.isInteger(emprestimoId) || emprestimoId <= 0) {
       throw new Error('ID do empréstimo inválido.');
