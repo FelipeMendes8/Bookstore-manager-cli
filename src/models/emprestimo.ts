@@ -2,11 +2,10 @@ type StatusEmprestimo = 'pendente' | 'devolvido' | 'cancelado';
 
 export interface Emprestimo {
   id: number;
-  clienteId: number;
-  livroId: number;
-  funcionarioId: number;
-  dataEmprestimo: Date;
-  dataPrevista: Date;
-  dataDevolucao: Date | null;
+  cliente_id: number;
+  livro_id: number;
+  funcionario_id: number;
+  data_emprestimo: Date;
+  data_devolucao: Date | null;
   status: StatusEmprestimo;
 }

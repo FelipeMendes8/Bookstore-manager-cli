@@ -18,4 +18,12 @@ export class EmprestimoService {
     const emprestimoDB = new EmprestimoRepository(pool);
     return await emprestimoDB.realizarEmprestimo(livroId, clienteId, funcionario.id);
   }
+
+  async devolverEmprestimo(emprestimoId: number) {
+    if (!Number.isInteger(emprestimoId) || emprestimoId <= 0) {
+      throw new Error('ID do empréstimo inválido.');
+    }
+    const emprestimoDB = new EmprestimoRepository(pool);
+    return await emprestimoDB.devolverEmprestimo(emprestimoId);
+  }
 }

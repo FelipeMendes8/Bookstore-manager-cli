@@ -47,5 +47,7 @@ CREATE TABLE emprestimo (
   funcionario_id INTEGER NOT NULL REFERENCES funcionario(id), 
   data_emprestimo DATE NOT NULL,
   data_devolucao DATE NULL,
-  status VARCHAR(30) NOT NULL
+  status VARCHAR(30) NOT NULL CHECK (
+    status IN ('pendente', 'devolvido', 'cancelado')
+  )
 );

@@ -83,4 +83,56 @@ export class EmprestimoRepository {
       poolConnection.release();
     }
   }
+
+  async buscarEmprestimo(id: number): Promise<Emprestimo | null> {
+    const result = await this.pool.query<Emprestimo>('SELECT * FROM emprestimo WHERE id = $1;', [id]);
+
+    return result.rows[0] ?? null;
+  }
+
+  //listarEmprestimos
+
+  async devolverEmprestimo(emprestimoId: number): Promise<boolean> {
+    const emprestimo = await this.buscarEmprestimo(emprestimoId);
+
+    if (emprestimo === null) {
+      throw new Error('Empréstimo não encontrado.');
+    }
+
+    if (emprestimo.status !== 'pendente') {
+      throw new Error('Este empréstimo não está pendente.');
+    }
+
+    const poolConnection = await this.pool.connect();
+
+    try {
+      await poolConnection.query('BEGIN');
+
+      await poolConnection.query(
+        `
+      UPDATE emprestimo
+      SET data_devolucao = CURRENT_TIMESTAMP,
+      status = 'devolvido'
+      WHERE id = $1
+      AND status = 'pendente'
+      `,
+        [emprestimoId],
+      );
+
+      await poolConnection.query(
+        `UPDATE livro
+        SET disponiveis = disponiveis + 1
+        WHERE id = $1`,
+        [emprestimo.livro_id],
+      );
+
+      await poolConnection.query('COMMIT');
+      return true;
+    } catch (error) {
+      await poolConnection.query('ROLLBACK');
+      throw error;
+    } finally {
+      poolConnection.release();
+    }
+  }
 }

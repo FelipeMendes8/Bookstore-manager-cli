@@ -1,6 +1,6 @@
 import { Interface } from 'node:readline/promises';
 
-import { realizarEmprestimoController } from '../controllers/emprestimoController';
+import { devolverEmprestimoController, realizarEmprestimoController } from '../controllers/emprestimoController';
 
 export async function exibirMenuEmprestimo(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -32,12 +32,20 @@ export async function exibirMenuEmprestimo(terminal: Interface): Promise<void> {
           }
 
           const emprestimo = await realizarEmprestimoController(livroId, clienteId);
-          console.log(`Empréstimo ${String(emprestimo.id)} realizado com sucesso!`);
+          console.log(`Empréstimo ID: ${String(emprestimo.id)} realizado com sucesso!`);
 
           break;
         }
         case '2': {
-          console.log('devolver');
+          const emprestimoId = Number(await terminal.question('Digite o ID do empréstimo: '));
+          if (isNaN(emprestimoId)) {
+            console.log('Erro: Informe um número válido no campo de ID.');
+            break;
+          }
+          const emprestimo = await devolverEmprestimoController(emprestimoId);
+          if (emprestimo) {
+            console.log(`Empréstimo ID: ${String(emprestimoId)} devolvido com sucesso!`);
+          }
           break;
         }
         case '3': {
