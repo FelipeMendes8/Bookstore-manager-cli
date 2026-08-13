@@ -45,8 +45,9 @@ CREATE TABLE emprestimo (
   cliente_id INTEGER NOT NULL REFERENCES cliente(id),
   livro_id INTEGER NOT NULL REFERENCES livro(id),
   funcionario_id INTEGER NOT NULL REFERENCES funcionario(id), 
-  data_emprestimo TIMESTAMP NOT NULL,
-  data_prevista TIMESTAMP NOT NULL,
-  data_devolucao TIMESTAMP NOT NULL,
-  status VARCHAR(30) NOT NULL
+  data_emprestimo DATE NOT NULL,
+  data_devolucao DATE NULL,
+  status VARCHAR(30) NOT NULL CHECK (
+    status IN ('pendente', 'devolvido', 'cancelado')
+  )
 );
