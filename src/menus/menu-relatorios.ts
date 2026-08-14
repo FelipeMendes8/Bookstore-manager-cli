@@ -1,6 +1,12 @@
 import { Interface } from 'node:readline/promises';
 
-import { listarDisponiveisController, listarEmprestadosController, livrosPorAutorController } from '../controllers/relatorioController';
+import {
+  clienteEmprestimoController,
+  listarDisponiveisController,
+  listarEmprestadosController,
+  livroEmprestimoController,
+  livrosPorAutorController,
+} from '../controllers/relatorioController';
 
 export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -50,8 +56,8 @@ export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
           }
 
           const livros = await livrosPorAutorController(id);
+          console.log('[Livros do Autor]');
           for (const livro of livros) {
-            console.log('[Livros do Autor]');
             console.log('Autor: ', livro.nome_autor);
             console.log(`ID: ${String(livro.id)} | ${livro.titulo} | ISBN: ${livro.isbn}`);
           }
@@ -59,11 +65,34 @@ export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
           break;
         }
         case '4': {
-          console.log('case 4');
+          const id = Number(await terminal.question('Digite o ID do livro para Buscar os emprestimos: '));
+
+          if (isNaN(id)) {
+            console.log('Erro: Informe um número válido no campo ID do livro.');
+            break;
+          }
+          const livro = await livroEmprestimoController(id);
+          console.log('[Emprestimos do livro]');
+
+          console.log(`Livro: ${livro.titulo}, ID: ${String(livro.id)}`);
+          console.log('Quantidade de empréstimos: ', livro.quantidade);
+
           break;
         }
         case '5': {
-          console.log('case 5');
+          console.log('\n[Clientes com empréstimos ativos]\n');
+          const clientes = await clienteEmprestimoController();
+
+          if (clientes.length === 0) {
+            console.log('Nenhum cliente possui empréstimos ativos.');
+            return;
+          }
+
+          for (const cliente of clientes) {
+            console.log(`Cliente: ${cliente.nome}`);
+            console.log(`Empréstimos ativos: ${cliente.quantidade}`);
+            console.log('----------------------------------------');
+          }
           break;
         }
         default: {

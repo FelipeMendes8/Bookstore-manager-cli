@@ -28,4 +28,20 @@ export class RelatorioService {
 
     return livros;
   }
+
+  async livroEmprestimo(id: number) {
+    const emprestimoDB = new RelatorioRepository(pool);
+    const emprestimos = await emprestimoDB.quantidadeEmprestimosPorLivro(id);
+    if (emprestimos === null) {
+      throw new Error('Nenhum empréstimo encontrado.');
+    }
+    return emprestimos;
+  }
+
+  async clientesComEmprestimos() {
+    const emprestimoDB = new RelatorioRepository(pool);
+    const emprestimos = await emprestimoDB.clientesComEmprestimos();
+
+    return emprestimos;
+  }
 }

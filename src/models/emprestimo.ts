@@ -19,3 +19,9 @@ export interface EmprestimoDetalhado {
   data_emprestimo: Date;
   data_devolucao: Date | null;
 }
+
+export interface EmprestimosLivro {
+  id: number;
+  titulo: string;
+  quantidade: string;
+}

@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 
+import { ClienteEmprestimosAtivos } from '../models/cliente';
+import { EmprestimosLivro } from '../models/emprestimo';
 import { Livro, LivroEmprestado, LivroRelatorio } from '../models/livro';
 export class RelatorioRepository {
   constructor(private readonly pool: Pool) {}
@@ -50,11 +52,41 @@ export class RelatorioRepository {
     return result.rows;
   }
 
-  async quantidadeEmprestimosPorLivro() {
-    // SELECT ...
+  async quantidadeEmprestimosPorLivro(id: number): Promise<EmprestimosLivro | null> {
+    const result = await this.pool.query<EmprestimosLivro>(
+      `
+    SELECT
+        l.id,
+        l.titulo,
+        COUNT(e.id) AS quantidade
+    FROM livro l
+    LEFT JOIN emprestimo e
+        ON e.livro_id = l.id
+    WHERE l.id = $1
+      AND l.ativo = 1
+    GROUP BY l.id, l.titulo;
+    `,
+      [id],
+    );
+
+    return result.rows[0] ?? null;
   }
 
-  async clientesComEmprestimosAtivos() {
-    // SELECT ...
+  async clientesComEmprestimos(): Promise<ClienteEmprestimosAtivos[]> {
+    const result = await this.pool.query<ClienteEmprestimosAtivos>(
+      `SELECT
+        c.id,
+        c.nome,
+        COUNT(e.id) AS quantidade
+        FROM cliente c
+        INNER JOIN emprestimo e
+            ON e.cliente_id = c.id
+        WHERE c.ativo = 1
+        AND e.status = 'pendente'
+        GROUP BY c.id, c.nome
+        ORDER BY COUNT(e.id) DESC, UPPER(c.nome);`,
+    );
+
+    return result.rows;
   }
 }

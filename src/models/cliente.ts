@@ -4,3 +4,9 @@ export interface Cliente {
   email: string;
   ativo: number;
 }
+
+export interface ClienteEmprestimosAtivos {
+  id: number;
+  nome: string;
+  quantidade: string;
+}
