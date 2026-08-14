@@ -4,6 +4,7 @@ import { exibirMenuAutores } from './menu-autor';
 import { exibirMenuClientes } from './menu-cliente';
 import { exibirMenuEmprestimo } from './menu-emprestimo';
 import { exibirMenuLivros } from './menu-livro';
+import { exibirMenuRelatorios } from './menu-relatorios';
 
 export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
   //Obs: Aqui seria bom validar o login do funcionário
@@ -40,7 +41,7 @@ export async function exibirMenuPrincipal(terminal: Interface): Promise<void> {
         break;
       }
       case '5': {
-        console.log('Acessando menu de relatórios...');
+        await exibirMenuRelatorios(terminal);
 
         break;
       }
