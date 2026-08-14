@@ -35,13 +35,12 @@ export async function exibirMenuLivros(terminal: Interface): Promise<void> {
           break;
         }
         case '2': {
-          console.log('\n[Lista de livros]');
           const livros = await listarLivroController();
+          console.log('\n[Lista de livros]');
           livros.forEach((livro) => {
             console.log('----------------------------------------');
             console.log(`#${String(livro.id)} '${livro.titulo}' ISBN: ${livro.isbn}.`);
             console.log(`Autor: ${livro.autores}`);
-            console.log('----------------------------------------');
           });
 
           break;

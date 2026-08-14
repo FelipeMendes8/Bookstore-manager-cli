@@ -24,7 +24,7 @@ export class EmprestimoService {
     const emprestimos = await emprestimoDB.listar();
 
     if (emprestimos.length === 0) {
-      throw new Error('Nenhum livro encontrado.');
+      throw new Error('Nenhum empréstimo encontrado.');
     }
 
     return emprestimos;
