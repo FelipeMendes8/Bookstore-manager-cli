@@ -32,7 +32,7 @@ export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
         case '1': {
           const livros = await listarDisponiveisController();
 
-          console.log('[Livros Disponíveis]');
+          console.log('\n[Livros Disponíveis]\n');
           for (const livro of livros) {
             console.log(`Livro: ${livro.titulo}, ISBN: ${livro.isbn}, Quantidade: ${String(livro.disponiveis)}.`);
           }
@@ -85,7 +85,7 @@ export async function exibirMenuRelatorios(terminal: Interface): Promise<void> {
 
           if (clientes.length === 0) {
             console.log('Nenhum cliente possui empréstimos ativos.');
-            return;
+            break;
           }
 
           for (const cliente of clientes) {
